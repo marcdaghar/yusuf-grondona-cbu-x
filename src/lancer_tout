@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""
+================================================================================
+Script d'exécution global — Système CBU-X
+Sadaqa-BRI / Yusuf-Grondona Framework
+Auteur : Marc Daghar
+================================================================================
+"""
+import subprocess
+import sys
+import os
+from datetime import datetime
+
+def executer_option(numero):
+    """Exécute une option et capture la sortie."""
+    fichiers = {
+        1: "option1_flux_entropique.py",
+        2: "option2_logistique_villani.py",
+        3: "option3_waqf_numerique.py"
+    }
+
+    print(f"\n{'='*60}")
+    print(f"🚀 EXÉCUTION DE L'OPTION {numero}")
+    print(f"{'='*60}\n")
+
+    try:
+        resultat = subprocess.run(
+            [sys.executable, fichiers[numero]],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        print(resultat.stdout)
+        if resultat.stderr:
+            print("⚠️  Erreurs :", resultat.stderr)
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Erreur lors de l'exécution de l'option {numero}")
+        print(e.stderr)
+        return False
+
+def generer_index():
+    """Génère l'index global du projet."""
+    index = f"""# 📊 Système Monétaire CBU-X — Sadaqa-BRI Framework
+
+## 📅 Généré le {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+
+Ce projet contient trois implémentations complètes d'un système financier alternatif pour la coopération méditerranéenne, basé sur la théorie de la bifurcation entropique et le transport optimal.
+
+---
+
+## 📁 Structure du projet
+
+```
+yusuf-grondona-cbu-x/
+├── src/
+│   ├── option1_flux_entropique.py      # Thermodynamique économique
+│   ├── option2_logistique_villani.py   # Transport optimal (Sinkhorn)
+│   ├── option3_waqf_numerique.py       # Contrat intelligent Solidity
+│   └── lancer_tout.py                  # Script d'exécution global
+├── docs/
+│   ├── article_cbux.tex                # Article académique LaTeX
+│   └── README.md                       # Documentation principale
+├── data/                                # Données générées (CSV, PNG)
+├── tests/                               # Tests unitaires
+├── LICENSE                              # Licence MIT
+└── .gitignore                           # Fichiers ignorés par Git
+```
+
+---
+
+## 🧩 Résumé des trois options
+
+### Option 1 : Flux entropique (Thermodynamique économique)
+- **Objectif** : Calculer la fuite de valeur Tunisie-France
+- **Méthode** : Analyse des données commerciales synthétiques
+- **Sorties** : CSV, graphique, rapport avec leviers d'action
+- **Équation clé** : `Φ(t) = Σ_p (M_{p,t} - X_{p,t})`
+
+### Option 2 : Logistique Villani (Transport optimal)
+- **Objectif** : Optimiser les flux entre 4 ports méditerranéens
+- **Méthode** : Algorithme de Sinkhorn (régularisation entropique)
+- **Sorties** : Plan de transport, courbure de Ricci, visualisation réseau
+- **Équation clé** : `P* = argmin_{P∈U(a,b)} <P,C> - ε·H(P)`
+
+### Option 3 : Waqf numérique (DAO islamique)
+- **Objectif** : Contrat intelligent pour redistribution sans intérêt
+- **Méthode** : Solidity sur Ethereum/Polygon
+- **Sorties** : Contrat `.sol`, README de déploiement
+- **Équation clé** : `Part_k = α_k · R_tot` avec `Σ α_k = 1`
+
+---
+
+## 📦 Installation
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/marcdaghar/yusuf-grondona-cbu-x.git
+cd yusuf-grondona-cbu-x
+
+# Installer les dépendances Python
+pip install numpy pandas matplotlib seaborn networkx scipy
+
+# Exécution globale
+python src/lancer_tout.py
+
+# OU exécution individuelle
+python src/option1_flux_entropique.py
+python src/option2_logistique_villani.py
+python src/option3_waqf_numerique.py
+```
+
+---
+
+## 🔗 Liens théoriques
+
+| Composant | Référence mathématique | Rôle |
+|-----------|------------------------|------|
+| Flux entropique | Thermodynamique économique | Mesure la dissipation |
+| Transport optimal | Villani (2009), Cuturi (2013) | Optimise la logistique |
+| Courbure de Ricci | Ollivier (2009), Perelman (2002) | Détecte les fragilités |
+| Waqf numérique | Économie islamique du don | Redistribue sans intérêt |
+
+---
+
+## 📈 Prochaines étapes
+
+1. [ ] Remplacer les données synthétiques par des APIs réelles (Banque mondiale, douanes)
+2. [ ] Intégrer l'algorithme de Sinkhorn dans `Ricci_flow.py`
+3. [ ] Déployer le contrat `waqf_cluster.sol` sur Sepolia
+4. [ ] Développer une interface Streamlit pour la visualisation en temps réel
+5. [ ] Soumettre l'article à une revue académique (Journal of Islamic Finance / Physica A)
+
+---
+
+## 📝 Licence
+
+MIT — Voir [LICENSE](LICENSE)
+
+---
+*Système CBU-X — Sadaqa-BRI Framework*
+*Auteur : Marc Daghar*
+"""
+    with open('INDEX.md', 'w', encoding='utf-8') as f:
+        f.write(index)
+    print("📋 Index généré : INDEX.md")
+
+def main():
+    print("""
+╔══════════════════════════════════════════════════════════════╗
+║  🚀 SYSTÈME MONÉTAIRE CBU-X — Sadaqa-BRI Framework           ║
+║  Exécution des 3 options complémentaires                     ║
+╚══════════════════════════════════════════════════════════════╝
+""")
+
+    success = True
+    for i in range(1, 4):
+        if not executer_option(i):
+            success = False
+
+    generer_index()
+
+    print("\n" + "="*60)
+    if success:
+        print("✅ TOUTES LES OPTIONS ONT ÉTÉ EXÉCUTÉES AVEC SUCCÈS !")
+    else:
+        print("⚠️  CERTAINES OPTIONS ONT RENCONTRÉ DES ERREURS")
+    print("="*60)
+
+if __name__ == "__main__":
+    main()
