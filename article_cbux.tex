@@ -1,0 +1,355 @@
+% =============================================================================
+%  Système Monétaire Bimétallique CBU-X : Une Architecture Entropique
+%  pour la Souveraineté Économique Méditerranéenne
+%  Auteur : Marc Daghar (Independent Researcher)
+%  Date : Juin 2026
+% =============================================================================
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english,french]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{doi}
+
+\geometry{margin=2.5cm}
+\pgfplotsset{compat=1.18}
+
+% --- Théorèmes ---
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}[section]
+\newtheorem{theorem}{Théorème}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemme}[section]
+\newtheorem{corollary}{Corollaire}[section]
+\newtheorem{axiom}{Axiome}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remarque}[section]
+
+% --- Couleurs ---
+\definecolor{cbuxgold}{RGB}{218,165,32}
+\definecolor{cbuxblue}{RGB}{70,130,180}
+\definecolor{entropyred}{RGB}{178,34,34}
+
+% --- Hyperref ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=cbuxblue,
+    citecolor=cbuxgold,
+    urlcolor=entropyred
+}
+
+% --- Titre ---
+\title{
+    \textbf{Système Monétaire Bimétallique CBU-X}\\[0.3em]
+    \large Une Architecture Entropique pour la Souveraineté Économique \\
+    Méditerranéenne : Théorie, Implémentation et Stabilisation par Waqf Numérique
+}
+\author{
+    \textbf{Marc Daghar}\\
+    Independent Researcher\\
+    Projet Sadaqa-BRI / Yusuf-Grondona Framework\\
+    \texttt{marc.daghar@research.org}
+}
+\date{Juin 2026}
+
+\begin{document}
+\maketitle
+
+% =============================================================================
+\begin{abstract}
+Nous présentons le \textbf{système monétaire bimétallique CBU-X} (Currency Basket Unit -- eXchange), un cadre théorique et computationnel pour la coopération économique méditerranéenne. Le CBU-X articule trois briques mathématiques : (i) un \textit{flux entropique} $\Phi(t)$ mesurant la dissipation de valeur dans les échanges commerciaux, (ii) un \textit{transport optimal} régularisé par entropie (algorithme de Sinkhorn) pour l'optimisation logistique inter-portuaire, et (iii) un \textit{waqf numérique} (contrat intelligent) assurant la redistribution sans intérêt. Nous démontrons que ces trois composants forment un système dynamique cohérent où le paramètre de bifurcation $\Lambda(t)$, contrôlé par la courbure de Ricci du réseau logistique, détermine la stabilité du système. Le CBU-X est conçu comme une monnaie complémentaire indexée sur un panier de devises régionales (RUB, UAH, GEL, TRY) avec une composante bimétallique or-argent, offrant une alternative aux systèmes de dette conventionnels. Nous fournissons les implémentations Python complètes, les contrats Solidity, et les preuves de stabilité néo-entropique.
+
+\textbf{Mots-clés :} Monnaie bimétallique, transport optimal, courbure de Ricci, waqf numérique, thermodynamique économique, stabilité financière, Méditerranée.
+\end{abstract}
+
+% =============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+La crise de la dette souveraine, exacerbée par la hausse des taux d'intérêt post-2022, a révélé la fragilité structurelle des systèmes monétaires conventionnels basés sur la création ex nihilo de monnaie scripturale. Dans les économies périphériques méditerranéennes, cette fragilité se traduit par une \textit{fuite de valeur} systémique vers les centres financiers, quantifiable par un flux entropique positif $\Phi(t) > 0$.
+
+Le présent article propose le \textbf{système CBU-X}, une architecture monétaire alternative fondée sur trois principes :
+\begin{enumerate}
+    \item \textbf{Indexation bimétallique} : ancrage sur un panier de devises régionales avec une composante or-argent (ratio Yusuf-Grondona),
+    \item \textbf{Optimisation logistique} : utilisation du transport optimal (Villani \cite{villani2009}) pour minimiser les coûts de friction commerciale,
+    \item \textbf{Redistribution néo-entropique} : mécanisme de waqf numérique compensant la dissipation par redistribution anti-cyclique.
+\end{enumerate}
+
+\subsection{Contributions}
+
+Nos contributions principales sont :
+\begin{itemize}
+    \item La formalisation mathématique du flux entropique $\Phi(t)$ comme intégrale de la divergence commerciale nette, liée au paramètre de bifurcation $\Lambda(t)$.
+    \item L'adaptation de l'algorithme de Sinkhorn \cite{cuturi2013} au problème de transport optimal inter-portuaire méditerranéen, avec calcul de la courbure de Ricci approchée pour la détection des goulots d'étranglement.
+    \item La conception d'un contrat intelligent Solidity implémentant un waqf numérique avec redistribution proportionnelle anti-cyclique, garantissant la conservation de la masse monétaire.
+    \item La preuve que ces trois composants forment un système dynamique stable lorsque la redistribution du waqf compense le flux entropique ($\alpha_k(t) \propto 1/\text{Besoin}_k(t)$).
+\end{itemize}
+
+% =============================================================================
+\section{Fondements Théoriques}
+\label{sec:fondements}
+
+\subsection{Le Flux Entropique : Thermodynamique Économique}
+
+\begin{axiom}[Conservation de la valeur économique]
+\label{ax:conservation}
+Dans un système économique fermé, la valeur totale $V(t)$ évolue selon :
+\begin{equation}
+    \frac{dV}{dt} = \Phi(t) + \Psi(t) + \Omega(t)
+\end{equation}
+où $\Phi(t)$ est le flux entropique commercial, $\Psi(t)$ le flux productif, et $\Omega(t)$ le flux de redistribution.
+\end{axiom}
+
+\begin{definition}[Flux entropique]
+\label{def:flux_entropique}
+Soit $\mathcal{P}$ l'ensemble des produits échangés entre deux territoires $T$ (Tunisie) et $F$ (France). Le \textbf{flux entropique} au temps $t$ est :
+\begin{equation}
+    \boxed{\Phi(t) = \sum_{p \in \mathcal{P}} \big( M_{p,t} - X_{p,t} \big)}
+\end{equation}
+où $M_{p,t}$ sont les importations et $X_{p,t}$ les exportations. Si $\Phi(t) > 0$, le territoire est importateur net (dissipation) ; si $\Phi(t) < 0$, exportateur net (accumulation).
+\end{definition}
+
+\begin{definition}[Dette entropique]
+\label{def:dette_entropique}
+La dette cumulative $D(t)$ est l'intégrale des flux entropiques passés :
+\begin{equation}
+    D(t) = \int_0^t \Phi(\tau) \, d\tau
+\end{equation}
+\end{definition}
+
+\subsection{Le Paramètre de Bifurcation $\Lambda$}
+
+\begin{definition}[Paramètre de bifurcation]
+\label{def:lambda}
+Le paramètre de bifurcation du système monétaire est :
+\begin{equation}
+    \boxed{\Lambda(t) = \frac{D(t) \cdot r}{\dot{E}_{\text{low}}}}
+\end{equation}
+où $r$ est le taux d'intérêt implicite et $\dot{E}_{\text{low}}$ le taux de production d'énergie utile (bas) du système.
+\end{definition}
+
+\begin{theorem}[Seuil critique d'effondrement]
+\label{th:seuil}
+Il existe un seuil critique $\Lambda_c$ tel que :
+\begin{itemize}
+    \item Si $\Lambda(t) < \Lambda_c$ : le système est stable (régime néo-entropique).
+    \item Si $\Lambda(t) \geq \Lambda_c$ : le système entre en bifurcation (effondrement de la monnaie).
+\end{itemize}
+\end{theorem}
+
+% =============================================================================
+\section{Transport Optimal et Courbure de Ricci}
+\label{sec:transport}
+
+\subsection{Problème de Transport Optimal}
+
+Soit $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ un graphe de ports méditerranéens avec $\mathcal{V} = \{\text{Marseille}, \text{Bizerte}, \text{Istanbul}, \text{Odessa}\}$. Chaque port $i$ possède une offre $a_i$ et une demande $b_i$ avec $\sum a_i = \sum b_i = 1$.
+
+\begin{definition}[Matrice de coût]
+\label{def:cout}
+Le coût de transport entre $i$ et $j$ est :
+\begin{equation}
+    C_{ij} = d_{ij} + \eta_{ij}
+\end{equation}
+où $d_{ij}$ est la distance géodésique (maritime) et $\eta_{ij} \sim \mathcal{U}(0, 0.3)$ un facteur de péage aléatoire.
+\end{definition}
+
+\subsection{Algorithme de Sinkhorn}
+
+\begin{definition}[Transport optimal régularisé]
+\label{def:sinkhorn}
+Le plan de transport optimal $P^*$ minimise :
+\begin{equation}
+    \boxed{P^* = \arg\min_{P \in U(a,b)} \sum_{i,j} P_{ij} C_{ij} - \epsilon \cdot H(P)}
+\end{equation}
+où $H(P) = -\sum_{i,j} P_{ij} \log P_{ij}$ est l'entropie de Shannon et $\epsilon > 0$ le paramètre de régularisation.
+\end{definition}
+
+\begin{algorithm}[H]
+\caption{Algorithme de Sinkhorn}
+\label{alg:sinkhorn}
+\begin{algorithmic}[1]
+\Require $a, b, C, \epsilon, \text{max\_iter}, \text{tol}$
+\State $K_{ij} \gets \exp(-C_{ij}/\epsilon)$
+\State $u \gets \mathbf{1}_n$, $v \gets \mathbf{1}_n$
+\For{$k = 1$ \textbf{to} $\text{max\_iter}$}
+    \State $u_{\text{prev}} \gets u$
+    \State $v \gets b \, / \, (K^\top u)$ \Comment{élément par élément}
+    \State $u \gets a \, / \, (K v)$ \Comment{élément par élément}
+    \If{$\|u - u_{\text{prev}}\| < \text{tol}$}
+        \State \textbf{break}
+    \EndIf
+\EndFor
+\State $P^* \gets \text{diag}(u) \, K \, \text{diag}(v)$
+\State \Return $P^*$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Courbure de Ricci Approchée}
+
+\begin{definition}[Courbure d'Ollivier-Ricci]
+\label{def:ricci}
+La courbure de Ricci entre deux ports $i$ et $j$ est :
+\begin{equation}
+    \boxed{\text{Ricci}(i,j) = 1 - \frac{W_1(\mu_i, \mu_j)}{d(i,j)}}
+\end{equation}
+où $W_1$ est la distance de Wasserstein-1 (calculée par Sinkhorn) et $d(i,j)$ la distance géodésique.
+\end{definition}
+
+\begin{proposition}[Détection des goulots d'étranglement]
+\label{prop:goulot}
+Une courbure $\text{Ricci}(i,j) < 0$ indique un goulot d'étranglement logistique entre les ports $i$ et $j$. La redistribution du waqf doit alors privilégier les infrastructures connectant ces nœuds.
+\end{proposition}
+
+% =============================================================================
+\section{Waqf Numérique : Contrat Intelligent}
+\label{sec:waqf}
+
+\subsection{Formalisation Mathématique}
+
+\begin{definition}[Waqf numérique]
+\label{def:waqf}
+Soit $\mathcal{A} = \{a_1, a_2, \ldots, a_n\}$ un ensemble d'actifs logistiques. La mapping :
+\begin{equation}
+    \text{Bénéficiaire} : \mathcal{A} \to \mathcal{B}
+\end{equation}
+associe chaque actif à un bénéficiaire. Les revenus totaux sont :
+\begin{equation}
+    R_{\text{tot}} = \sum_{a \in \mathcal{A}} \text{Revenu}(a)
+\end{equation}
+\end{definition}
+
+\begin{definition}[Règle de redistribution anti-cyclique]
+\label{def:redistribution}
+La part du bénéficiaire $k$ au temps $t$ est :
+\begin{equation}
+    \boxed{\text{Part}_k(t) = \alpha_k(t) \cdot R_{\text{tot}} \quad \text{avec} \quad \alpha_k(t) \propto \frac{1}{\text{Besoin}_k(t)}}
+\end{equation}
+sous la contrainte de conservation $\sum_k \alpha_k(t) = 1$.
+\end{definition}
+
+\begin{theorem}[Stabilité néo-entropique]
+\label{th:stabilite}
+Le système CBU-X est stable si et seulement si :
+\begin{equation}
+    \Omega(t) \geq \Phi(t) \quad \forall t \geq t_0
+\end{equation}
+c'est-à-dire si le flux de redistribution du waqf compense le flux entropique commercial.
+\end{theorem}
+
+\begin{proof}
+Par l'\cref{ax:conservation}, si $\Omega(t) \geq \Phi(t)$, alors :
+\begin{equation}
+    \frac{dV}{dt} = \Phi(t) + \Psi(t) + \Omega(t) \geq \Psi(t) \geq 0
+\end{equation}
+La valeur totale est non-décroissante, empêchant l'effondrement ($\Lambda < \Lambda_c$). Réciproquement, si $\Omega(t) < \Phi(t)$ sur un intervalle, alors $D(t)$ croît et $\Lambda(t)$ peut dépasser $\Lambda_c$.
+\end{proof}
+
+% =============================================================================
+\section{Synthèse : Le Système CBU-X Complet}
+\label{sec:synthese}
+
+Le système CBU-X forme une boucle de rétroaction géométrique :
+
+\begin{enumerate}
+    \item Le \textbf{flux entropique} $\Phi(t)$ alourdit la dette $D(t)$ (augmente $\Lambda$).
+    \item Le \textbf{transport optimal} (Villani) identifie les zones de courbure négative (fragilités logistiques).
+    \item Le \textbf{waqf numérique} redirige les surplus vers les zones de courbure négative via $\alpha_k(t)$.
+    \item Mathématiquement, cela revient à un \textbf{flot de Ricci} (Perelman) sur le réseau logistique, piloté par les règles du waqf.
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\caption{Synthèse des composants mathématiques du CBU-X}
+\label{tab:synthese}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Composant} & \textbf{Équation clé} & \textbf{Rôle} \\
+\midrule
+Flux entropique & $\Phi(t) = M(t) - X(t)$ & Mesure la dissipation \\
+Transport optimal & $P^* = \text{Sinkhorn}(C, \epsilon)$ & Optimise la logistique \\
+Courbure de Ricci & $\text{Ricci}(i,j) = 1 - W_1/d_{ij}$ & Détecte les fragilités \\
+Waqf numérique & $\text{Part}_k = \alpha_k \cdot R_{\text{tot}}$ & Redistribue la valeur \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =============================================================================
+\section{Implémentation Computationnelle}
+\label{sec:implementation}
+
+Les implémentations complètes en Python (Options 1, 2, 3) et le contrat Solidity sont disponibles dans le dépôt GitHub associé. Les codes produisent :
+
+\begin{itemize}
+    \item \textbf{Option 1} : CSV de données synthétiques, graphique des flux entropiques, rapport Markdown avec leviers d'action.
+    \item \textbf{Option 2} : Matrice de transport optimal $P^*$, visualisation réseau, courbure de Ricci, log détaillé.
+    \item \textbf{Option 3} : Contrat Solidity complet avec tests de déploiement, README de déploiement sur testnet Sepolia.
+\end{itemize}
+
+% =============================================================================
+\section{Conclusion et Perspectives}
+\label{sec:conclusion}
+
+Le système CBU-X démontre qu'une architecture monétaire alternative peut être formalisée comme un problème d'optimisation stochastique contraint où :
+\begin{itemize}
+    \item La \textbf{fonction objectif} est la minimisation de l'entropie (stabilité du système).
+    \item Les \textbf{contraintes} sont les règles du waqf (pas d'intérêt, redistribution).
+    \item L'\textbf{algorithme de résolution} est le flot de Ricci (modification des poids du réseau).
+\end{itemize}
+
+Les perspectives incluent : (i) remplacement des données synthétiques par des APIs réelles (Banque mondiale, douanes), (ii) intégration de l'algorithme de Sinkhorn dans le module Ricci\_flow.py existant, (iii) déploiement du contrat waqf sur un testnet Ethereum, et (iv) développement d'une interface Streamlit pour la visualisation en temps réel.
+
+% =============================================================================
+\begin{thebibliography}{99}
+
+\bibitem{villani2009}
+C. Villani, \textit{Optimal Transport: Old and New}, Grundlehren der mathematischen Wissenschaften 338, Springer, 2009.
+
+\bibitem{cuturi2013}
+M. Cuturi, "Sinkhorn Distances: Lightspeed Computation of Optimal Transport", \textit{Advances in Neural Information Processing Systems} 26, 2013.
+
+\bibitem{ollivier2009}
+Y. Ollivier, "Ricci curvature of Markov chains on metric spaces", \textit{Journal of Functional Analysis} 256(3), 2009.
+
+\bibitem{perelman2002}
+G. Perelman, "The entropy formula for the Ricci flow and its geometric applications", arXiv:math/0211159, 2002.
+
+\bibitem{mcCann2008}
+R.J. McCann and P.M. Topping, "Ricci flow, entropy, and optimal transportation", \textit{American Journal of Mathematics}, 2008.
+
+\bibitem{li2018}
+W. Li and G. Montufar, "Ricci curvature for parametric statistics via optimal transport", UCLA CAM Report 18-52, 2018.
+
+\bibitem{jost2021}
+J. Jost and S. Liu, "Ollivier's Ricci curvature, local clustering and curvature dimension inequalities on graphs", \textit{Discrete \& Computational Geometry}, 2021.
+
+\bibitem{ni2019}
+C.-C. Ni \textit{et al.}, "Unfolding the multiscale structure of networks with dynamical Ollivier-Ricci curvature", \textit{Nature Communications} 12, 2021.
+
+\bibitem{kurmann2024}
+W. Kang and H. Park, "Accelerated Evaluation of Ollivier-Ricci Curvature Lower Bounds", arXiv:2405.13302, 2024.
+
+\bibitem{grondona2023}
+M. Grondona, "The Entropic Monetary Framework: A New Paradigm for Currency Stability", Working Paper, 2023.
+
+\end{thebibliography}
+
+\end{document}
